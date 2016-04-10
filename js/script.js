@@ -3,7 +3,9 @@ var
     firstStartTime = 0,
     lastPauseTime = 0,
     stoppedTime = 0,
-    tickInterval = null;
+    tickInterval = null,
+    lapNumber = 0,
+    isRunning = false;
 
 function clear() {
     isFirstStart = true;
@@ -14,6 +16,8 @@ function clear() {
     document.getElementById('msec').innerHTML = '000';
     document.getElementById('start').style.display = 'block';
     document.getElementById('pause').style.display = 'none';
+    isRunning = false;
+    document.getElementById('log').innerHTML = '';
 }
 
 function start() {
@@ -29,6 +33,7 @@ function start() {
     tickInterval = setInterval(tick, 41);
     document.getElementById('start').style.display = 'none';
     document.getElementById('pause').style.display = 'block';
+    isRunning = true;
 }
 
 function pause() {
@@ -36,6 +41,14 @@ function pause() {
     lastPauseTime = new Date();
     document.getElementById('start').style.display = 'block';
     document.getElementById('pause').style.display = 'none';
+    isRunning = false;
+    log('Stop');
+}
+
+function split() {
+    if (isRunning) {
+        log('Split');
+    }
 }
 
 function tick() {
@@ -64,9 +77,16 @@ function tick() {
     document.getElementById('msec').innerHTML = msec;
 }
 
+function log(action) {
+    var time = document.getElementById('counter').innerHTML + '.' + document.getElementById('msec').innerHTML;
+    ++lapNumber;
+    document.getElementById('log').innerHTML += '<div>' + lapNumber + ' ' + action + ' ' + time + '</div>';
+}
+
 function init() {
     document.getElementById('start').addEventListener('click', start);
     document.getElementById('pause').addEventListener('click', pause);
+    document.getElementById('split').addEventListener('click', split);
     document.getElementById('clear').addEventListener('click', clear);
     clear();
 }

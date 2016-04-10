@@ -26,3 +26,6 @@
 #pause {
     display: none;
 }
+#log {
+    padding-top: 20px;
+}
